@@ -14,7 +14,7 @@ class Router
 
         $url = $this->parseURL($url);
 
-        print_r($url);
+
 
         if (isset($url[1])) :
             if (file_exists('../App/controllers/' . $url[1] . '.php')) :
@@ -23,7 +23,10 @@ class Router
             endif;
         endif;
 
-        echo "<br> Controlador a ser chamado: " . $this->controller;
+        // echo "<br> Controlador a ser chamado: " . $this->controller;
+
+
+        // TRANSFORMA A STRING EM UM CONTROLADOR 
 
         require_once '../App/controllers/' . $this->controller . '.php';
 
@@ -31,7 +34,7 @@ class Router
 
 
         if (isset($url[2])) :
-            var_dump($url[2]);
+
             if (method_exists($this->controller, $url[2])) :
                 $this->method = $url[2];
                 unset($url[2]); // apaga o metodo da string url
@@ -42,18 +45,23 @@ class Router
         endif;
 
 
-        echo 'method: ' . $this->method;
+        //   echo 'method: ' . $this->method;
 
 
         unset($url[0]);
 
+
+
         if ($url) :
+            echo 'positive';
+
             $this->param = array_values($url);
         else :
             $this->param = [];
         endif;
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+
+        call_user_func_array([$this->controller, $this->method], $this->param);
     }
 
     public function parseURL($url)
@@ -64,7 +72,7 @@ class Router
         if (substr($aux, -1) == '/') :
             $aux = substr($aux, 0, -1);
         endif;
-        $test = explode('/', $aux);
+
 
 
         return explode('/', $aux);

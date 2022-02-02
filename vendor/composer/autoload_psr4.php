@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'GUMP\\' => array($vendorDir . '/wixel/gump/src'),
     'App\\' => array($baseDir . '/App'),
 );

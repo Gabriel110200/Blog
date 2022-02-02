@@ -1,27 +1,21 @@
 <?php
 
-class Home
+
+use App\Core\BaseController;
+
+
+
+
+class Home extends BaseController
 {
+
     public function index()
     {
+        $artigoModel = $this->model('ArtigoModel');
 
-        echo '<br> executando home index';
-    }
 
-    public function teste()
-    {
-        echo '<br>executando home teste';
-    }
-
-    public function teste2()
-    {
-        echo '<br>executando home teste2';
-    }
-
-    public function info($p1 = 'p1', $p2 = 'p2')
-    {
-        echo '<br>executando info<br/>';
-        echo "$p1<br/>";
-        echo "$p2<br />";
+        $artigos = $artigoModel->read()->fetchAll(\PDO::FETCH_ASSOC);
+        $data = ['artigos' => $artigos];
+        $this->view('home/index', $data);
     }
 }
