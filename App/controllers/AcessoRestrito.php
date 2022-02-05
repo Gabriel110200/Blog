@@ -15,7 +15,7 @@ class AcessoRestrito extends BaseController
     ];
 
     protected $rules = [
-        'email' => 'required|min_len,8|',
+        'email' => 'required|min_len,8|max_len,255',
         'senha' => 'required',
         'captcha' => 'required|validar_CAPTCHA_CODE'
 
@@ -32,35 +32,31 @@ class AcessoRestrito extends BaseController
     {
         $_SESSION['CAPTCHA_CODE'] = Funcoes::gerarCaptcha();
         $imagem = Funcoes::gerarImgCaptcha($_SESSION['CAPTCHA_CODE']);
-
         $_SESSION['CSRF_token'] = Funcoes::gerarTokenCSRF();
-
         $data = ['imagem' => $imagem];
-
         $this->view('acessorestrito/login', $data);
     }
 
     public function logar()
     {
 
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") :
 
-            echo 'entrou ';
+
 
             Validador::add_validator("validar_CAPTCHA_CODE", function ($field, $input) {
                 return $input['captcha'] === $_SESSION['CAPTCHA_CODE'];
             }, 'Código de Segurança incorreto.');
-
-
 
             $validacao = new Validador("pt-br");
 
             $post_filtrado = $validacao->filter($_POST, $this->filters);
             $post_validado = $validacao->validate($post_filtrado, $this->rules);
 
-            if ($post_validado == true) {
 
-                if ($_POST['CSRF_token'] == $_SESSION['CSRF_token']) {
+            if ($post_validado == true) :
+
+                if ($_POST['CSRF_token'] == $_SESSION['CSRF_token']) :
                     $senha_enviada = $_POST['senha'];
 
                     // gera uma senha fake 
@@ -73,19 +69,29 @@ class AcessoRestrito extends BaseController
                     $usuarioModel  = $this->model('UserModel');
                     $usuario = $usuarioModel->getUsuario($_POST['email']);
 
-                    if (!empty($usuario)) {
+                    if (!empty($usuario)) :
                         $senha_hash = $usuario['senha'];
-                    } else {
+                    else :
                         $senha_hash = $hash_senha_fake;
-                    }
+                    endif;
 
-                    if (password_verify($senha_enviada, $senha_hash)) {
+                    if (password_verify($senha_enviada, $senha_hash)) :
                         $_SESSION[' id '] = $usuario['id'];
                         $_SESSION['nomeUsuario'] = $usuario['nome'];
                         $_SESSION['emailUsuario'] = $usuario['email'];
-                    }
-                }
-            }
-        }
+
+                        Funcoes::redirect("Dashboard");
+                    else :
+                        $mensagem = ["Usuário e/ou Senha incorreta"];
+                        $_SESSION['CAPTCHA_CODE'] = Funcoes::gerarCaptcha();
+
+                    endif;
+
+
+                endif;
+
+            endif;
+
+        endif;
     }
 }

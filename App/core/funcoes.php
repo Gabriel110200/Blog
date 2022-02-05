@@ -51,4 +51,9 @@ class Funcoes
         // retorna a tag img com a string base64 
         return '<img src=' . $src . ">'";
     }
+
+    public static function redirect($rota = "")
+    {
+        header("Location:" . URL_BASE . "/" . $rota);
+    }
 }

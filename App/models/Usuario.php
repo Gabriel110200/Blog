@@ -1,21 +1,21 @@
-<?php 
+<?php
 
-namespace App/models; 
+namespace App\models;
 
 
-class Usuario 
+class Usuario
 {
-    private $id,$nome,$email,$senha;
+    private $id, $nome, $email, $senha;
 
 
     public function __construct()
     {
 
-        $this->id = 0 ;
-        $this->nome = ""; 
+        $this->id = 0;
+        $this->nome = "";
         $this->senha = '';
-        $this->hashid = ''; 
-
+        $this->hashid = '';
+        $this->email = '';
     }
 
 
@@ -38,6 +38,16 @@ class Usuario
         $this->nome = $nome;
     }
 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
     public function getSenha()
     {
         return $this->senha;
@@ -54,11 +64,9 @@ class Usuario
         return $this->hashid;
     }
 
-    public function setHashid($hash){
+    public function setHashid($hash)
+    {
 
         $this->hash = $hash;
     }
-
-
-
 }
