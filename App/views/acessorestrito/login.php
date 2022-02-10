@@ -1,3 +1,21 @@
+<?php
+if (isset($data['mensagens'])) {
+?>
+    <div class="col-6">
+        <div class="alert alert-danger" role="alert">
+            <?php
+            foreach ($data['mensagens'] as $mensagem) {
+                echo $mensagem . '<br>';
+            }
+            ?>
+        </div>
+
+    </div>
+
+<?php } ?>
+
+
+
 <form action="<?= URL_BASE . '/acessorestrito/logar' ?>" method="POST">
     <input id="CSRF_token" type="hidden" name="CSRF_token" value="<?= $_SESSION['CSRF_token'] ?>">
 

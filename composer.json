@@ -8,6 +8,7 @@
         ]
     },
     "require": {
-        "wixel/gump": "^1.12"
+        "wixel/gump": "^1.12",
+        "codeguy/upload": "^1.3"
     }
 }

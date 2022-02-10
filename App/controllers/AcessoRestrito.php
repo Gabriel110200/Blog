@@ -54,7 +54,8 @@ class AcessoRestrito extends BaseController
             $post_validado = $validacao->validate($post_filtrado, $this->rules);
 
 
-            if ($post_validado == true) :
+
+            if ($post_validado === true) :
 
                 if ($_POST['CSRF_token'] == $_SESSION['CSRF_token']) :
                     $senha_enviada = $_POST['senha'];
@@ -84,14 +85,49 @@ class AcessoRestrito extends BaseController
                     else :
                         $mensagem = ["Usuário e/ou Senha incorreta"];
                         $_SESSION['CAPTCHA_CODE'] = Funcoes::gerarCaptcha();
+                        $imagem = Funcoes::gerarImgCaptcha($_SESSION['CAPTCHA_CODE']);
+                        $_SESSION['CSRF_token'] = Funcoes::gerarTokenCSRF();
+
+                        $data = [
+                            'imagem' => $imagem,
+                            'mensagens' => $mensagem
+                        ];
+
+                        $this->view('acessorestrito/login', $data);
 
                     endif;
 
+                else : //falha de token csrf
+                    die('Erro 404');
 
                 endif;
 
+            else : // erro de validação 
+                $mensagem = $validacao->get_errors_array();
+                $_SESSION['CAPTCHA_CODE'] = Funcoes::gerarCaptcha();
+                $imagem = Funcoes::gerarImgCaptcha($_SESSION['CAPTCHA_CODE']);
+                $_SESSION['CSRF_token'] = Funcoes::gerarTokenCSRF();
+
+                $data = [
+                    'imagem' => $imagem,
+                    'mensagem' => $mensagem
+                ];
+
+
+                $this->view('acessorestrito/login', $data);
+
+
             endif;
 
+        else : // nao for post 
+            Funcoes::redirect();
         endif;
+    }
+
+    public function logout()
+    {
+        session_unset();
+        session_destroy();
+        Funcoes::redirect();
     }
 }

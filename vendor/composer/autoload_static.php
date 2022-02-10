@@ -33,6 +33,16 @@ class ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'Upload' => 
+            array (
+                0 => __DIR__ . '/..' . '/codeguy/upload/src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -42,6 +52,7 @@ class ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45::$prefixesPsr0;
             $loader->classMap = ComposerStaticInita47c5c96852b0bcbb7fec9ccd743ad45::$classMap;
 
         }, null, ClassLoader::class);
